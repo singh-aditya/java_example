@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Sample {
+public class Main {
   public static void main(String[] args) {
 //function has 4 things
 //1. name - anonymous
