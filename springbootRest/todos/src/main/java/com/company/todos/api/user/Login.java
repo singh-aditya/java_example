@@ -4,6 +4,9 @@ import com.company.todos.api.user.model.UserLoginDetails;
 import com.company.todos.security.Constants;
 import com.company.todos.security.token.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -53,6 +56,10 @@ public class Login {
                             @Header(name = "authorization",
                                     description = "Bearer {JWT value here}")
                     })
+    })
+
+    @Parameters({
+            @Parameter(name = Constants.AUTH_HEADER_PREFIX, description = "${userController.authHeader.description}", in = ParameterIn.HEADER)
     })
     @GetMapping(Constants.USER_LOGIN_URL + "/refreshtoken")
     public ResponseEntity<?> refreshToken(HttpServletRequest req, HttpServletResponse res) {

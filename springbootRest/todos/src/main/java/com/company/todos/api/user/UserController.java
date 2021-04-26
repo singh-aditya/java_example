@@ -6,6 +6,10 @@ import com.company.todos.security.Constants;
 import com.company.todos.security.auth.AuthorityName;
 import com.company.todos.security.auth.RoleName;
 import com.company.todos.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Parameters({
+            @Parameter(name = Constants.AUTH_HEADER_PREFIX, description = "${userController.authHeader.description}", in = ParameterIn.HEADER)
+    })
     @PreAuthorize("hasRole(T(com.company.todos.security.auth.RoleName).ADMIN.name()) or #id == principal.userId")
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public User getUser(@PathVariable String id) {
@@ -34,6 +41,9 @@ public class UserController {
         return userService.createUser(userInputDetails);
     }
 
+    @Parameters({
+            @Parameter(name = Constants.AUTH_HEADER_PREFIX, description = "${userController.authHeader.description}", in = ParameterIn.HEADER)
+    })
     @PreAuthorize("hasRole(T(com.company.todos.security.auth.RoleName).ADMIN.name()) or #id == principal.userId")
     @PutMapping(path = "/{id}",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
@@ -42,6 +52,9 @@ public class UserController {
         return userService.updateUser(id, userInputDetails);
     }
 
+    @Parameters({
+            @Parameter(name = Constants.AUTH_HEADER_PREFIX, description = "${userController.authHeader.description}", in = ParameterIn.HEADER)
+    })
     @PreAuthorize("hasAuthority(T(com.company.todos.security.auth.AuthorityName).DELETE.name())")
     @DeleteMapping(path = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -52,6 +65,9 @@ public class UserController {
                 : ResponseEntity.notFound().build();
     }
 
+    @Parameters({
+            @Parameter(name = Constants.AUTH_HEADER_PREFIX, description = "${userController.authHeader.description}", in = ParameterIn.HEADER)
+    })
     @PreAuthorize("hasRole(T(com.company.todos.security.auth.RoleName).ADMIN.name())")
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<User> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,

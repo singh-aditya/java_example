@@ -1,11 +1,12 @@
 package com.company.todos.api.todo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Todo {
+public class Todo extends RepresentationModel<Todo> {
     private Long id;
     private String description;
     private Date targetDate;
