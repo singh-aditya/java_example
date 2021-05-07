@@ -12,14 +12,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class Login {
 
@@ -44,6 +42,7 @@ public class Login {
                     })
     })
     @PostMapping(Constants.USER_LOGIN_URL)
+    @CrossOrigin(exposedHeaders = {Constants.AUTH_HEADER_PREFIX, Constants.USERID_HEADER_PREFIX})
     public void theFakeLogin(@RequestBody UserLoginDetails loginReq) {
         throw new IllegalStateException("This method should not be called. This method is implemented by Spring Security");
     }
@@ -61,6 +60,7 @@ public class Login {
     @Parameters({
             @Parameter(name = Constants.AUTH_HEADER_PREFIX, description = "${userController.authHeader.description}", in = ParameterIn.HEADER)
     })
+    @CrossOrigin(exposedHeaders = {Constants.AUTH_HEADER_PREFIX})
     @GetMapping(Constants.USER_LOGIN_URL + "/refreshtoken")
     public ResponseEntity<?> refreshToken(HttpServletRequest req, HttpServletResponse res) {
         String token = jwtTokenUtil.getTokenFromReq(req);
